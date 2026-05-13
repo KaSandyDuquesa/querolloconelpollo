@@ -70,7 +70,8 @@
     <div class="grid">
         <button class="wa-btn" onclick="reproducir('PETICION POWER RANGER.ogg')">PETICION POWER RANGER</button>
         <button class="wa-btn" onclick="reproducir('PETICION BUNKERS.ogg')">PETICION BUNKERS</button>
-        <button class="wa-btn" onclick="reproducir('PETICION GOKU.MPEG')">PETICION GOKU</button>
+        <!-- Verificado: PETICION GOKU con extensión .mpeg -->
+        <button class="wa-btn" onclick="reproducir('PETICION GOKU.mpeg')">PETICION GOKU</button>
     </div>
 
     <h2>🎵 CANCIONES Y PROGRAMA</h2>
@@ -98,14 +99,29 @@
     const trackText = document.getElementById('current-track');
 
     function reproducir(nombreArchivo) {
-        // Detiene el audio actual antes de cargar el nuevo para que no se solapen
+        // 1. Detenemos cualquier audio previo
         player.pause();
-        player.src = nombreArchivo;
-        player.load(); // Carga el nuevo archivo
-        player.play();
         
-        // Muestra el nombre del archivo que está sonando
-        trackText.innerText = "Reproduciendo: " + nombreArchivo;
+        // 2. Limpiamos la fuente anterior por completo
+        player.src = ""; 
+        
+        // 3. Asignamos la nueva ruta (debe estar en la misma carpeta que el HTML)
+        player.src = nombreArchivo;
+        
+        // 4. Forzamos la recarga del archivo en el reproductor
+        player.load();
+        
+        // 5. Intentamos reproducir
+        const playPromise = player.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                trackText.innerText = "Reproduciendo: " + nombreArchivo;
+            }).catch(error => {
+                console.error("Error de reproducción:", error);
+                trackText.innerText = "Error: No se encontró " + nombreArchivo;
+            });
+        }
     }
 </script>
 
