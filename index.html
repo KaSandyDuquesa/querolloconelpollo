@@ -3,169 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Experience</title>
+    <title>Reproductor de Audio Exacto</title>
     <style>
         :root {
-            --primary: #6366f1;
-            --whatsapp: #22c55e;
-            --bg: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --text: #f8fafc;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --primary: #bb86fc;
+            --wa: #03dac6;
+            --text: #ffffff;
         }
-
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
-            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a);
             color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
         }
-
-        .player-card {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: var(--card);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        h2 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .section { margin-bottom: 30px; }
-
+        h2 { font-size: 1.2rem; color: var(--primary); border-bottom: 1px solid #333; padding-bottom: 10px; }
         .grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
         }
-
         button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text);
-            padding: 12px;
-            border-radius: 12px;
+            background: #2c2c2c;
+            border: 1px solid #444;
+            color: white;
+            padding: 15px 5px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        button:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-            border-color: transparent;
-        }
-
-        button.wa-btn:hover {
-            background: var(--whatsapp);
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-        }
-
-        .now-playing-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            border: 1px inset rgba(255, 255, 255, 0.05);
-        }
-
-        #track-name {
-            display: block;
-            margin-bottom: 15px;
             font-size: 0.85rem;
-            color: #94a3b8;
-            font-weight: 500;
+            transition: 0.2s;
+            text-align: center;
         }
-
-        audio {
-            width: 100%;
-            height: 40px;
-            filter: invert(100%) hue-rotate(180deg) brightness(1.5);
+        button:hover { background: var(--primary); color: #000; }
+        button:active { transform: scale(0.95); }
+        .wa-btn { border-color: var(--wa); color: var(--wa); }
+        .wa-btn:hover { background: var(--wa); color: #000; }
+        
+        .player-fixed {
+            background: #252525;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
         }
-
-        /* Animación de pulso para cuando suena */
-        .playing {
-            border-color: var(--primary) !important;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
-        }
+        #current-track { margin-bottom: 10px; font-weight: bold; font-size: 0.9rem; display: block; color: #aaa; }
+        audio { width: 100%; filter: invert(100%); }
     </style>
 </head>
 <body>
 
-<div class="player-card">
-    <div class="section">
-        <h2>🎵 QUE ROLLO CON EL POLLO !!!!!</h2>
-        <div class="grid">
-            <button onclick="playAudio('cancion1.mp3', this)">Track 01</button>
-            <button onclick="playAudio('cancion2.mp3', this)">Track 02</button>
-            <button onclick="playAudio('cancion3.mp3', this)">Track 03</button>
-            <button onclick="playAudio('cancion4.mp3', this)">Track 04</button>
-            <button onclick="playAudio('cancion5.mp3', this)">Track 05</button>
-            <button onclick="playAudio('cancion6.mp3', this)">Track 06</button>
-            <button onclick="playAudio('cancion7.mp3', this)">Track 07</button>
-            <button onclick="playAudio('cancion8.mp3', this)">Track 08</button>
-            <button onclick="playAudio('cancion9.mp3', this)">Track 09</button>
-            <button onclick="playAudio('cancion10.mp3', this)">Track 10</button>
-        </div>
+<div class="container">
+    <h2>🎤 PETICIONES (WHATSAPP)</h2>
+    <div class="grid">
+        <!-- Nombres exactos de la imagen image_57e15e.png -->
+        <button class="wa-btn" onclick="reproducir('PETICION POWER RANGER.mp3')">PETICION POWER RANGER</button>
+        <button class="wa-btn" onclick="reproducir('PETICION BUNKERS.mp3')">PETICION BUNKERS</button>
+        <button class="wa-btn" onclick="reproducir('PETICION GOKU.mp3')">PETICION GOKU</button>
     </div>
 
-    <div class="section">
-        <h2>🎤 Mensajes de Voz</h2>
-        <div class="grid">
-            <button class="wa-btn" onclick="playAudio('wa1.mp3', this)">Audio WA 1</button>
-            <button class="wa-btn" onclick="playAudio('wa2.mp3', this)">Audio WA 2</button>
-            <button class="wa-btn" onclick="playAudio('wa3.mp3', this)">Audio WA 3</button>
-        </div>
+    <h2>🎵 CANCIONES Y PROGRAMA</h2>
+    <div class="grid">
+        <!-- Nombres exactos de la imagen image_583bcf.png -->
+        <button onclick="reproducir('CIERRE PROGRAMA.mp3')">CIERRE PROGRAMA</button>
+        <button onclick="reproducir('CAIFANES VIENTO.mp3')">CAIFANES VIENTO</button>
+        <button onclick="reproducir('CUENTO CAPERUCITA.mp3')">CUENTO CAPERUCITA</button>
+        <button onclick="reproducir('ANUNCIO COCINA.mp3')">ANUNCIO COCINA</button>
+        <button onclick="reproducir('CANCION LOS BUNKERS.mp3')">CANCION LOS BUNKERS</button>
+        <button onclick="reproducir('CUENTO 2.mp3')">CUENTO 2</button>
+        <button onclick="reproducir('ANUNCIO ESCUELA.mp3')">ANUNCIO ESCUELA</button>
+        <button onclick="reproducir('CANCION TIROTEO.mp3')">CANCION TIROTEO</button>
+        <button onclick="reproducir('TERROR.mp3')">TERROR</button>
+        <button onclick="reproducir('INICIO PROGRAMA.mp3')">INICIO PROGRAMA</button>
     </div>
 
-    <div class="now-playing-container">
-        <span id="track-name">SIN REPRODUCIR</span>
-        <audio id="main-player" controls></audio>
+    <div class="player-fixed">
+        <span id="current-track">Ningún audio seleccionado</span>
+        <audio id="player" controls></audio>
     </div>
 </div>
 
 <script>
-    const player = document.getElementById('main-player');
-    const trackName = document.getElementById('track-name');
+    const player = document.getElementById('player');
+    const trackText = document.getElementById('current-track');
 
-    function playAudio(file, btn) {
-        // Quitar clase 'playing' de todos los botones
-        document.querySelectorAll('button').forEach(b => b.classList.remove('playing'));
-        
-        // Configurar y reproducir
-        player.src = file;
+    function reproducir(nombreArchivo) {
+        // Detiene el audio actual antes de empezar el nuevo
+        player.pause();
+        player.src = nombreArchivo;
         player.play();
         
-        // Visuals
-        btn.classList.add('playing');
-        trackName.innerText = "REPRODUCIENDO: " + file.toUpperCase();
+        // Actualiza el texto en pantalla
+        trackText.innerText = "Reproduciendo: " + nombreArchivo;
     }
 </script>
 
