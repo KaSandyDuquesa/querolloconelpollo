@@ -68,15 +68,13 @@
 <div class="container">
     <h2>🎤 PETICIONES (WHATSAPP)</h2>
     <div class="grid">
-        <!-- Nombres exactos de la imagen image_57e15e.png -->
-        <button class="wa-btn" onclick="reproducir('PETICION POWER RANGER.mp3')">PETICION POWER RANGER</button>
-        <button class="wa-btn" onclick="reproducir('PETICION BUNKERS.mp3')">PETICION BUNKERS</button>
-        <button class="wa-btn" onclick="reproducir('PETICION GOKU.mp3')">PETICION GOKU</button>
+        <button class="wa-btn" onclick="reproducir('PETICION POWER RANGER.ogg')">PETICION POWER RANGER</button>
+        <button class="wa-btn" onclick="reproducir('PETICION BUNKERS.ogg')">PETICION BUNKERS</button>
+        <button class="wa-btn" onclick="reproducir('PETICION GOKU.ogg')">PETICION GOKU</button>
     </div>
 
     <h2>🎵 CANCIONES Y PROGRAMA</h2>
     <div class="grid">
-        <!-- Nombres exactos de la imagen image_583bcf.png -->
         <button onclick="reproducir('CIERRE PROGRAMA.mp3')">CIERRE PROGRAMA</button>
         <button onclick="reproducir('CAIFANES VIENTO.mp3')">CAIFANES VIENTO</button>
         <button onclick="reproducir('CUENTO CAPERUCITA.mp3')">CUENTO CAPERUCITA</button>
@@ -100,12 +98,13 @@
     const trackText = document.getElementById('current-track');
 
     function reproducir(nombreArchivo) {
-        // Detiene el audio actual antes de empezar el nuevo
+        // Detiene el audio actual antes de cargar el nuevo para que no se solapen
         player.pause();
         player.src = nombreArchivo;
+        player.load(); // Carga el nuevo archivo
         player.play();
         
-        // Actualiza el texto en pantalla
+        // Muestra el nombre del archivo que está sonando
         trackText.innerText = "Reproduciendo: " + nombreArchivo;
     }
 </script>
